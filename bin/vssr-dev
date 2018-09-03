@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+const parseArgs = require('minimist')
+const consola = require('consola')
+const { version } = require('../package.json')
+const { Vssr, Builder } = require('..')
+
+console.log(Vssr)
