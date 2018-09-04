@@ -1,20 +1,20 @@
 import Browser from '../utils/browser'
-import { getPort, loadFixture, Nuxt } from '../utils'
+import { getPort, loadFixture, Vssr } from '../utils'
 
 let port
 const browser = new Browser()
 const url = route => 'http://localhost:' + port + route
 
-let nuxt = null
+let vssr = null
 let page = null
 
 const startServer = async (type = 'basic') => {
   const config = await loadFixture(type)
-  nuxt = new Nuxt(config)
+  vssr = new Vssr(config)
   port = await getPort()
-  await nuxt.listen(port, 'localhost')
+  await vssr.listen(port, 'localhost')
 
-  return nuxt
+  return vssr
 }
 
 describe('basic vue-config', () => {
@@ -26,8 +26,8 @@ describe('basic vue-config', () => {
   })
 
   test('default', async () => {
-    nuxt = await startServer()
-    expect(nuxt.options.vue.config).toEqual({ silent: true, performance: false })
+    vssr = await startServer()
+    expect(vssr.options.vue.config).toEqual({ silent: true, performance: false })
     page = await browser.page(url('/config'))
 
     expect(await page.$text('#silent')).toBe('true')
@@ -35,10 +35,10 @@ describe('basic vue-config', () => {
   })
 
   test('explicit', async () => {
-    nuxt = await startServer('config-explicit')
+    vssr = await startServer('config-explicit')
     page = await browser.page(url('/config'))
 
-    expect(nuxt.options.vue.config).toEqual({ silent: false, performance: true, devtools: true })
+    expect(vssr.options.vue.config).toEqual({ silent: false, performance: true, devtools: true })
 
     expect(await page.$text('#silent')).toBe('false')
     expect(await page.$text('#performance')).toBe('true')
@@ -46,7 +46,7 @@ describe('basic vue-config', () => {
   })
 
   afterEach(async () => {
-    await nuxt.close()
+    await vssr.close()
   })
 
   afterAll(async () => {
