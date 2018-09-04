@@ -1,0 +1,12 @@
+{
+  "name": "example-cached-components",
+  "dependencies": {
+    "lru-cache": "^4.0.2",
+    "nuxt-edge": "latest"
+  },
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start"
+  }
+}

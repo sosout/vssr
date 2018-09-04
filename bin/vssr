@@ -3,10 +3,10 @@ const { join } = require('path')
 
 const consola = require('consola')
 
-// 全局错误处理
+// Global error handler
 process.on('unhandledRejection', err => consola.error(err))
 
-// 当发生致命错误则退出进程
+// Exit process on fatal errors
 consola.add({
   log(logObj) {
     if (logObj.type === 'fatal') {

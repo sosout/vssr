@@ -2,6 +2,6 @@ app
 !app/store.js
 node_modules
 dist
-.nuxt
+.vssr
 examples/coffeescript/pages/index.vue
 !examples/storybook/.storybook

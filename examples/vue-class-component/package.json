@@ -1,0 +1,12 @@
+{
+  "name": "example-vue-class-component",
+  "dependencies": {
+    "nuxt-edge": "latest",
+    "nuxt-class-component": "latest"
+  },
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start"
+  }
+}

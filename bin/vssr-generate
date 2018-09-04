@@ -1,0 +1,56 @@
+#!/usr/bin/env node
+const parseArgs = require('minimist')
+const consola = require('consola')
+const { Vssr, Builder, Generator } = require('..')
+const { loadVssrConfig } = require('./common/utils')
+
+const argv = parseArgs(process.argv.slice(2), {
+  alias: {
+    h: 'help',
+    c: 'config-file',
+    s: 'spa',
+    u: 'universal'
+  },
+  boolean: ['h', 's', 'u', 'build'],
+  string: ['c'],
+  default: {
+    c: 'vssr.config.js',
+    build: true
+  }
+})
+
+if (argv.help) {
+  process.stderr.write(`
+    Description
+      Generate a static web application (server-rendered)
+    Usage
+      $ vssr generate <dir>
+    Options
+      --spa              Launch in SPA mode
+      --universal        Launch in Universal mode (default)
+      --config-file, -c  Path to Vssr.js config file (default: vssr.config.js)
+      --help, -h         Displays this message
+      --no-build         Just run generate for faster builds when just dynamic routes changed. Vssr build is needed before this command.
+  `)
+  process.exit(0)
+}
+
+const options = loadVssrConfig(argv)
+
+options.dev = false // Force production mode (no webpack middleware called)
+
+const vssr = new Vssr(options)
+const builder = new Builder(vssr)
+const generator = new Generator(vssr, builder)
+
+const generateOptions = {
+  init: true,
+  build: argv.build
+}
+
+generator
+  .generate(generateOptions)
+  .then(() => {
+    process.exit(0)
+  })
+  .catch(err => consola.fatal(err))

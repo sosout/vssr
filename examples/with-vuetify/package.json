@@ -1,0 +1,17 @@
+{
+  "name": "example-with-vuetify",
+  "dependencies": {
+    "nuxt-edge": "latest",
+    "vuetify": "latest"
+  },
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "devDependencies": {
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1"
+  }
+}
