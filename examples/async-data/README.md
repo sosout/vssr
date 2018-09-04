@@ -1,3 +1,3 @@
-# Async data with Nuxt.js
+# Async data with Vssr.js
 
 https://nuxtjs.org/examples/async-data

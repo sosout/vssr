@@ -12,8 +12,8 @@ export default {
   },
   /*
   ** Add server middleware
-  ** Nuxt.js uses `connect` module as server
-  ** So most of express middleware works with nuxt.js server middleware
+  ** Vssr.js uses `connect` module as server
+  ** So most of express middleware works with vssr.js server middleware
   */
   serverMiddleware: [
     // body-parser middleware

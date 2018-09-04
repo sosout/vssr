@@ -4,10 +4,10 @@
     <h1>Blog</h1>
     <ul>
       <li v-for="(post, index) in posts" :key="index">
-        <nuxt-link :to="{ name: 'posts-id', params: { id: post.id } }">{{ post.title }}</nuxt-link>
+        <vssr-link :to="{ name: 'posts-id', params: { id: post.id } }">{{ post.title }}</vssr-link>
       </li>
     </ul>
-    <p><nuxt-link to="/">Back to home page</nuxt-link></p>
+    <p><vssr-link to="/">Back to home page</vssr-link></p>
   </div>
 </template>
 

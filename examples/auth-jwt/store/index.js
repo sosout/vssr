@@ -13,7 +13,7 @@ const createStore = () => {
       }
     },
     actions: {
-      nuxtServerInit({ commit }, { req }) {
+      vssrServerInit({ commit }, { req }) {
         let auth = null
         if (req.headers.cookie) {
           const parsed = cookieparser.parse(req.headers.cookie)

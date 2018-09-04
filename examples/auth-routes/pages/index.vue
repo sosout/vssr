@@ -14,7 +14,7 @@
       <p><i>You can also refresh this page, you'll still be connected!</i></p>
       <button @click="logout">Logout</button>
     </div>
-    <p><nuxt-link to="/secret">Super secret page</nuxt-link></p>
+    <p><vssr-link to="/secret">Super secret page</vssr-link></p>
   </div>
 </template>
 

@@ -4,8 +4,8 @@
     "nuxt-edge": "latest"
   },
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt"
+    "dev": "vssr",
+    "build": "vssr build",
+    "start": "vssr"
   }
 }

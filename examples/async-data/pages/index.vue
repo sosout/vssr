@@ -3,7 +3,7 @@
   <div class="container">
     <h1>User Agent</h1>
     <p>{{ userAgent }}</p>
-    <p><nuxt-link to="/posts">Blog</nuxt-link></p>
+    <p><vssr-link to="/posts">Blog</vssr-link></p>
   </div>
 </template>
 

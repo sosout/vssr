@@ -2,12 +2,12 @@
   <div>
     <div v-if="$store.state.auth">
       <p>You are authenticated. You can see the
-        <nuxt-link to="/secret">secret page</nuxt-link>!
+        <vssr-link to="/secret">secret page</vssr-link>!
       </p>
       <button @click="logout">Logout</button>
     </div>
     <p v-else>Please
-      <nuxt-link to="/login">login</nuxt-link>.
+      <vssr-link to="/login">login</vssr-link>.
     </p>
   </div>
 </template>
