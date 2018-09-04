@@ -14,7 +14,7 @@ export const mutations = {
 }
 
 export const actions = {
-  nuxtServerInit({ commit, state }, { route }) {
+  vssrServerInit({ commit, state }, { route }) {
     if (route.query.onServerInit === '1') {
       commit('setId2', nextId())
     }

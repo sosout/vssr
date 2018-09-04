@@ -40,7 +40,7 @@ export default {
   env: {
     bool: true,
     num: 23,
-    string: 'Nuxt.js',
+    string: 'Vssr.js',
     object: {
       bool: false,
       string: 'ok',

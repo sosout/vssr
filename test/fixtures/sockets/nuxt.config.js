@@ -2,6 +2,6 @@ import path from 'path'
 
 export default {
   server: {
-    socket: path.resolve(__dirname, 'nuxt.socket')
+    socket: path.resolve(__dirname, 'vssr.socket')
   }
 }

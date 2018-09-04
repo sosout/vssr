@@ -12,14 +12,14 @@ export default {
     return new Promise((resolve) => {
       setTimeout(() => resolve({
         loaded: false,
-        name: 'Nuxt.js'
+        name: 'Vssr.js'
       }), 10)
     })
   },
   mounted() {
-    this.$nuxt.$loading.finish()
+    this.$vssr.$loading.finish()
     setTimeout(() => {
-      this.$nuxt.$loading.start()
+      this.$vssr.$loading.start()
       this.loaded = true
     }, 1500)
   }

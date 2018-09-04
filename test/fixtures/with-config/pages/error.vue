@@ -5,7 +5,7 @@
 <script>
 export default {
   fetch({ error }) {
-    error({ message: 'Nuxt Error', statusCode: 200 })
+    error({ message: 'Vssr Error', statusCode: 200 })
   }
 }
 </script>

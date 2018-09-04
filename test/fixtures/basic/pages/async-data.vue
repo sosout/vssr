@@ -6,7 +6,7 @@
 export default {
   asyncData() {
     return new Promise((resolve) => {
-      setTimeout(() => resolve({ name: 'Nuxt.js' }), 10)
+      setTimeout(() => resolve({ name: 'Vssr.js' }), 10)
     })
   }
 }

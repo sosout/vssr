@@ -2,7 +2,7 @@ import path from 'path'
 
 export default function () {
   // Disable parsing pages/
-  this.nuxt.options.build.createRoutes = () => {}
+  this.vssr.options.build.createRoutes = () => {}
 
   // Add /api endpoint
   this.addTemplate({

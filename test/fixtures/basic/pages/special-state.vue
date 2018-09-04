@@ -1,13 +1,13 @@
 <template>
-  <h1>Special state in `window.__NUXT__`</h1>
+  <h1>Special state in `window.__VSSR__`</h1>
 </template>
 
 <script>
 export default {
-  fetch({ beforeNuxtRender }) {
+  fetch({ beforeVssrRender }) {
     if (process.server) {
-      beforeNuxtRender(({ nuxtState }) => {
-        nuxtState.test = true
+      beforeVssrRender(({ vssrState }) => {
+        vssrState.test = true
       })
     }
   }

@@ -11,7 +11,7 @@ export default function middlewareModule(options) {
     this.addServerMiddleware('~/modules/middleware/log.js')
     // Add plain middleware
     this.addServerMiddleware((req, res, next) => {
-      res.setHeader('x-nuxt', 'hello')
+      res.setHeader('x-vssr', 'hello')
       next()
     })
     // Add file middleware

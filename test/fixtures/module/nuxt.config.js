@@ -14,8 +14,8 @@ export default {
   ],
   serverMiddleware: ['./modules/middleware/midd2'],
   hooks(hook) {
-    hook('ready', (nuxt) => {
-      nuxt.__ready_called__ = true
+    hook('ready', (vssr) => {
+      vssr.__ready_called__ = true
     })
     hook('build:done', (builder) => {
       builder.__build_done__ = true

@@ -1,6 +1,6 @@
 import path from 'path'
 
-let _nuxt
+let _vssr
 
 export default {
   render: {
@@ -38,14 +38,14 @@ export default {
   },
   head: {
     titleTemplate: (titleChunk) => {
-      return titleChunk ? `${titleChunk} - Nuxt.js` : 'Nuxt.js'
+      return titleChunk ? `${titleChunk} - Vssr.js` : 'Vssr.js'
     }
   },
   modulesDir: path.join(__dirname, '..', '..', '..', 'node_modules'),
   hooks: {
-    ready(nuxt) {
-      _nuxt = nuxt
-      nuxt.__hook_ready_called__ = true
+    ready(vssr) {
+      _vssr = vssr
+      vssr.__hook_ready_called__ = true
     },
     build: {
       done(builder) {
@@ -54,7 +54,7 @@ export default {
     },
     render: {
       routeDone(url) {
-        _nuxt.__hook_render_routeDone__ = url
+        _vssr.__hook_render_routeDone__ = url
       }
     },
     bad: null,

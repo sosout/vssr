@@ -1,4 +1,4 @@
-// Simple Nuxt Plugin
+// Simple Vssr Plugin
 
 import Vue from 'vue'
 
