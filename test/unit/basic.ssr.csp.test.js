@@ -1,4 +1,4 @@
-import { getPort, loadFixture, Nuxt, rp } from '../utils'
+import { getPort, loadFixture, Vssr, rp } from '../utils'
 
 let port
 const url = route => 'http://localhost:' + port + route
@@ -8,10 +8,10 @@ const startCspServer = async (csp, isProduction = true) => {
     debug: !isProduction,
     render: { csp }
   })
-  const nuxt = new Nuxt(options)
+  const vssr = new Vssr(options)
   port = await getPort()
-  await nuxt.listen(port, '0.0.0.0')
-  return nuxt
+  await vssr.listen(port, '0.0.0.0')
+  return vssr
 }
 
 const getHeader = debug => debug ? 'content-security-policy-report-only' : 'content-security-policy'
@@ -21,17 +21,17 @@ const reportOnlyHeader = getHeader(true)
 const startCspDevServer = csp => startCspServer(csp, false)
 
 describe('basic ssr csp', () => {
-  let nuxt
+  let vssr
 
   afterEach(async () => {
-    await nuxt.close()
+    await vssr.close()
   })
 
   describe('production mode', () => {
     test(
       'Not contain Content-Security-Policy header, when csp is false',
       async () => {
-        nuxt = await startCspServer(false)
+        vssr = await startCspServer(false)
         const { headers } = await rp(url('/stateless'), {
           resolveWithFullResponse: true
         })
@@ -43,7 +43,7 @@ describe('basic ssr csp', () => {
     test(
       'Contain Content-Security-Policy header, when csp is set',
       async () => {
-        nuxt = await startCspServer(true)
+        vssr = await startCspServer(true)
         const { headers } = await rp(url('/stateless'), {
           resolveWithFullResponse: true
         })
@@ -55,7 +55,7 @@ describe('basic ssr csp', () => {
     test(
       'Contain Content-Security-Policy-Report-Only header, when explicitly asked for',
       async () => {
-        nuxt = await startCspDevServer({ reportOnly: true })
+        vssr = await startCspDevServer({ reportOnly: true })
         const { headers } = await rp(url('/stateless'), {
           resolveWithFullResponse: true
         })
@@ -67,7 +67,7 @@ describe('basic ssr csp', () => {
     test(
       'Contain only unique hashes in header when csp is set',
       async () => {
-        nuxt = await startCspServer(true)
+        vssr = await startCspServer(true)
         const { headers } = await rp(url('/stateless'), {
           resolveWithFullResponse: true
         })
@@ -86,7 +86,7 @@ describe('basic ssr csp', () => {
           allowedSources: ['https://example.com', 'https://example.io']
         }
 
-        nuxt = await startCspServer(cspOption)
+        vssr = await startCspServer(cspOption)
         const { headers } = await rp(url('/stateless'), {
           resolveWithFullResponse: true
         })
@@ -108,7 +108,7 @@ describe('basic ssr csp', () => {
           }
         }
 
-        nuxt = await startCspServer(cspOption)
+        vssr = await startCspServer(cspOption)
         const { headers } = await rp(url('/stateless'), {
           resolveWithFullResponse: true
         })
@@ -130,7 +130,7 @@ describe('basic ssr csp', () => {
           }
         }
 
-        nuxt = await startCspServer(cspOption)
+        vssr = await startCspServer(cspOption)
         const { headers } = await rp(url('/stateless'), {
           resolveWithFullResponse: true
         })
@@ -149,7 +149,7 @@ describe('basic ssr csp', () => {
           'style-src': [`'self'`]
         }
 
-        nuxt = await startCspServer({
+        vssr = await startCspServer({
           policies
         })
 
@@ -174,7 +174,7 @@ describe('basic ssr csp', () => {
     test(
       'Not contain Content-Security-Policy-Report-Only header, when csp is false',
       async () => {
-        nuxt = await startCspDevServer(false)
+        vssr = await startCspDevServer(false)
         const { headers } = await rp(url('/stateless'), {
           resolveWithFullResponse: true
         })
@@ -186,7 +186,7 @@ describe('basic ssr csp', () => {
     test(
       'Contain Content-Security-Policy header, when explicitly asked for',
       async () => {
-        nuxt = await startCspDevServer({ reportOnly: false })
+        vssr = await startCspDevServer({ reportOnly: false })
         const { headers } = await rp(url('/stateless'), {
           resolveWithFullResponse: true
         })
@@ -198,7 +198,7 @@ describe('basic ssr csp', () => {
     test(
       'Contain Content-Security-Policy header, when csp is set',
       async () => {
-        nuxt = await startCspDevServer(true)
+        vssr = await startCspDevServer(true)
         const { headers } = await rp(url('/stateless'), {
           resolveWithFullResponse: true
         })
@@ -210,7 +210,7 @@ describe('basic ssr csp', () => {
     test(
       'Contain only unique hashes in header when csp is set',
       async () => {
-        nuxt = await startCspDevServer(true)
+        vssr = await startCspDevServer(true)
         const { headers } = await rp(url('/stateless'), {
           resolveWithFullResponse: true
         })
@@ -229,7 +229,7 @@ describe('basic ssr csp', () => {
           allowedSources: ['https://example.com', 'https://example.io']
         }
 
-        nuxt = await startCspDevServer(cspOption)
+        vssr = await startCspDevServer(cspOption)
         const { headers } = await rp(url('/stateless'), {
           resolveWithFullResponse: true
         })
@@ -251,7 +251,7 @@ describe('basic ssr csp', () => {
           }
         }
 
-        nuxt = await startCspDevServer(cspOption)
+        vssr = await startCspDevServer(cspOption)
         const { headers } = await rp(url('/stateless'), {
           resolveWithFullResponse: true
         })
@@ -273,7 +273,7 @@ describe('basic ssr csp', () => {
           }
         }
 
-        nuxt = await startCspDevServer(cspOption)
+        vssr = await startCspDevServer(cspOption)
         const { headers } = await rp(url('/stateless'), {
           resolveWithFullResponse: true
         })
@@ -292,7 +292,7 @@ describe('basic ssr csp', () => {
           'style-src': [`'self'`]
         }
 
-        nuxt = await startCspDevServer({
+        vssr = await startCspDevServer({
           policies
         })
 

@@ -1,4 +1,4 @@
-import { Nuxt, Generator } from '../utils'
+import { Vssr, Generator } from '../utils'
 
 describe('generator', () => {
   test('initRoutes with routes (fn => array)', async () => {
@@ -8,8 +8,8 @@ describe('generator', () => {
         routes: array
       }
     }
-    const nuxt = new Nuxt(config)
-    const generator = new Generator(nuxt)
+    const vssr = new Vssr(config)
+    const generator = new Generator(vssr)
     const routes = await generator.initRoutes()
 
     expect(routes.length).toBe(array.length)
@@ -27,8 +27,8 @@ describe('generator', () => {
         }
       }
     }
-    const nuxt = new Nuxt(config)
-    const generator = new Generator(nuxt)
+    const vssr = new Vssr(config)
+    const generator = new Generator(vssr)
     const routes = await generator.initRoutes()
 
     expect(routes.length).toBe(array.length)
@@ -45,8 +45,8 @@ describe('generator', () => {
         }
       }
     }
-    const nuxt = new Nuxt(config)
-    const generator = new Generator(nuxt)
+    const vssr = new Vssr(config)
+    const generator = new Generator(vssr)
     const array = ['/1', '/2', '/3', '/4']
     const routes = await generator.initRoutes(array)
 
@@ -64,8 +64,8 @@ describe('generator', () => {
         }
       }
     }
-    const nuxt = new Nuxt(config)
-    const generator = new Generator(nuxt)
+    const vssr = new Vssr(config)
+    const generator = new Generator(vssr)
     const array = ['/1', '/2', '/3', '/4']
     const routes = await generator.initRoutes(...array)
 

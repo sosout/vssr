@@ -1,48 +1,48 @@
 import { normalize } from 'path'
 import consola from 'consola'
-import { loadFixture, getPort, Nuxt, rp } from '../utils'
+import { loadFixture, getPort, Vssr, rp } from '../utils'
 
 let port
 const url = route => 'http://localhost:' + port + route
 
-let nuxt = null
+let vssr = null
 // let buildSpies = null
 
 describe('module', () => {
   beforeAll(async () => {
     const config = await loadFixture('module')
-    nuxt = new Nuxt(config)
+    vssr = new Vssr(config)
     port = await getPort()
-    await nuxt.listen(port, 'localhost')
+    await vssr.listen(port, 'localhost')
   })
 
   test('Plugin', async () => {
-    expect(normalize(nuxt.options.plugins[0].src).includes(
-      normalize('fixtures/module/.nuxt/basic.reverse.')
+    expect(normalize(vssr.options.plugins[0].src).includes(
+      normalize('fixtures/module/.vssr/basic.reverse.')
     )).toBe(true)
-    const { html } = await nuxt.renderRoute('/')
+    const { html } = await vssr.renderRoute('/')
     expect(html.includes('<h1>TXUN</h1>')).toBe(true)
   })
 
   test('Layout', async () => {
-    expect(nuxt.options.layouts.layout.includes('layout')).toBe(true)
+    expect(vssr.options.layouts.layout.includes('layout')).toBe(true)
 
-    const { html } = await nuxt.renderRoute('/layout')
+    const { html } = await vssr.renderRoute('/layout')
     expect(html.includes('<h1>Module Layouts</h1>')).toBe(true)
   })
 
   test('/404 should display the module error layout', async () => {
-    const { html } = await nuxt.renderRoute('/404')
+    const { html } = await vssr.renderRoute('/404')
     expect(html).toContain('You should see the error in a different Vue!')
   })
 
   test('Hooks', () => {
-    expect(nuxt.__module_hook).toBe(1)
-    expect(nuxt.__renderer_hook).toBe(2)
+    expect(vssr.__module_hook).toBe(1)
+    expect(vssr.__renderer_hook).toBe(2)
   })
 
   test('Hooks - Functional', () => {
-    expect(nuxt.__ready_called__).toBe(true)
+    expect(vssr.__ready_called__).toBe(true)
   })
 
   // test('Hooks - Error', async () => {
@@ -60,17 +60,17 @@ describe('module', () => {
   })
 
   test('Hooks - render context', async () => {
-    await nuxt.renderRoute('/render-context')
-    expect(nuxt.__render_context).toBeTruthy()
+    await vssr.renderRoute('/render-context')
+    expect(vssr.__render_context).toBeTruthy()
   })
 
   test('AddVendor - deprecated', () => {
-    nuxt.moduleContainer.addVendor('nuxt-test')
+    vssr.moduleContainer.addVendor('vssr-test')
     expect(consola.warn).toHaveBeenCalledWith('addVendor has been deprecated due to webpack4 optimization')
   })
 
-  // Close server and ask nuxt to stop listening to file changes
+  // Close server and ask vssr to stop listening to file changes
   afterAll(async () => {
-    await nuxt.close()
+    await vssr.close()
   })
 })

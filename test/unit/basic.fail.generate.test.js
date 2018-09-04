@@ -1,4 +1,4 @@
-import { loadFixture, Nuxt, Generator } from '../utils'
+import { loadFixture, Vssr, Generator } from '../utils'
 
 describe('basic fail generate', () => {
   test('Fail with routes() which throw an error', async () => {
@@ -10,8 +10,8 @@ describe('basic fail generate', () => {
       }
     })
 
-    const nuxt = new Nuxt(options)
-    const generator = new Generator(nuxt)
+    const vssr = new Vssr(options)
+    const generator = new Generator(vssr)
 
     await generator.generate({ build: false }).catch((e) => {
       expect(e.message).toBe('Not today!')

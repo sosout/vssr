@@ -1,21 +1,21 @@
 import consola from 'consola'
-import { loadFixture, getPort, Nuxt, rp } from '../utils'
+import { loadFixture, getPort, Vssr, rp } from '../utils'
 
 let port
 const url = route => 'http://localhost:' + port + route
 
-let nuxt = null
+let vssr = null
 
 describe('basic ssr', () => {
   beforeAll(async () => {
     const options = await loadFixture('basic')
-    nuxt = new Nuxt(options)
+    vssr = new Vssr(options)
     port = await getPort()
-    await nuxt.listen(port, '0.0.0.0')
+    await vssr.listen(port, '0.0.0.0')
   })
 
   test('/stateless', async () => {
-    const { html } = await nuxt.renderRoute('/stateless')
+    const { html } = await vssr.renderRoute('/stateless')
     expect(html.includes('<h1>My component!</h1>')).toBe(true)
   })
 
@@ -23,7 +23,7 @@ describe('basic ssr', () => {
   ** Example of testing via dom checking
   */
   test('/css', async () => {
-    const window = await nuxt.renderAndGetWindow(url('/css'))
+    const window = await vssr.renderAndGetWindow(url('/css'))
 
     const headHtml = window.document.head.innerHTML
     expect(headHtml.includes('color:red')).toBe(true)
@@ -36,7 +36,7 @@ describe('basic ssr', () => {
   })
 
   test('/postcss', async () => {
-    const window = await nuxt.renderAndGetWindow(url('/css'))
+    const window = await vssr.renderAndGetWindow(url('/css'))
 
     const headHtml = window.document.head.innerHTML
     expect(headHtml.includes('background-color:#00f')).toBe(true)
@@ -46,19 +46,19 @@ describe('basic ssr', () => {
   })
 
   test('/stateful', async () => {
-    const { html } = await nuxt.renderRoute('/stateful')
+    const { html } = await vssr.renderRoute('/stateful')
     expect(html.includes('<div><p>The answer is 42</p></div>')).toBe(true)
   })
 
   test('/store', async () => {
-    const { html } = await nuxt.renderRoute('/store')
+    const { html } = await vssr.renderRoute('/store')
     expect(html.includes('<h1>Vuex Nested Modules</h1>')).toBe(true)
     expect(html.includes('<p>1</p>')).toBe(true)
   })
 
   test('/head', async () => {
-    const window = await nuxt.renderAndGetWindow(url('/head'))
-    expect(window.document.title).toBe('My title - Nuxt.js')
+    const window = await vssr.renderAndGetWindow(url('/head'))
+    expect(window.document.title).toBe('My title - Vssr.js')
 
     const html = window.document.body.innerHTML
     expect(html.includes('<div><h1>I can haz meta tags</h1></div>')).toBe(true)
@@ -72,79 +72,79 @@ describe('basic ssr', () => {
   })
 
   test('/async-data', async () => {
-    const { html } = await nuxt.renderRoute('/async-data')
-    expect(html.includes('<p>Nuxt.js</p>')).toBe(true)
+    const { html } = await vssr.renderRoute('/async-data')
+    expect(html.includes('<p>Vssr.js</p>')).toBe(true)
   })
 
   test('/await-async-data', async () => {
-    const { html } = await nuxt.renderRoute('/await-async-data')
-    expect(html.includes('<p>Await Nuxt.js</p>')).toBe(true)
+    const { html } = await vssr.renderRoute('/await-async-data')
+    expect(html.includes('<p>Await Vssr.js</p>')).toBe(true)
   })
 
   test('/callback-async-data', async () => {
-    const { html } = await nuxt.renderRoute('/callback-async-data')
-    expect(html.includes('<p>Callback Nuxt.js</p>')).toBe(true)
+    const { html } = await vssr.renderRoute('/callback-async-data')
+    expect(html.includes('<p>Callback Vssr.js</p>')).toBe(true)
   })
 
   test('/users/1', async () => {
-    const { html } = await nuxt.renderRoute('/users/1')
+    const { html } = await vssr.renderRoute('/users/1')
     expect(html.includes('<h1>User: 1</h1>')).toBe(true)
   })
 
   test('/validate should display a 404', async () => {
-    const { html } = await nuxt.renderRoute('/validate')
+    const { html } = await vssr.renderRoute('/validate')
     expect(html.includes('This page could not be found')).toBe(true)
   })
 
   test('/validate-async should display a 404', async () => {
-    const { html } = await nuxt.renderRoute('/validate-async')
+    const { html } = await vssr.renderRoute('/validate-async')
     expect(html.includes('This page could not be found')).toBe(true)
   })
 
   test('/validate?valid=true', async () => {
-    const { html } = await nuxt.renderRoute('/validate?valid=true')
+    const { html } = await vssr.renderRoute('/validate?valid=true')
     expect(html.includes('<h1>I am valid</h1>')).toBe(true)
   })
 
   test('/validate-async?valid=true', async () => {
-    const { html } = await nuxt.renderRoute('/validate-async?valid=true')
+    const { html } = await vssr.renderRoute('/validate-async?valid=true')
     expect(html.includes('<h1>I am valid</h1>')).toBe(true)
   })
 
   test('/validate?error=403', async () => {
-    const { html, error } = await nuxt.renderRoute('/validate?error=403')
+    const { html, error } = await vssr.renderRoute('/validate?error=403')
     expect(error).toMatchObject({ statusCode: 403, message: 'Custom Error' })
     expect(html.includes('Custom Error')).toBe(true)
   })
 
   test('/validate-async?error=503', async () => {
-    const { html, error } = await nuxt.renderRoute('/validate-async?error=503')
+    const { html, error } = await vssr.renderRoute('/validate-async?error=503')
     expect(error).toMatchObject({ statusCode: 503, message: 'Custom Error' })
     expect(html.includes('Custom Error')).toBe(true)
   })
 
   test('/before-enter', async () => {
-    const { html } = await nuxt.renderRoute('/before-enter')
+    const { html } = await vssr.renderRoute('/before-enter')
     expect(html.includes('<h1>Index page</h1>')).toBe(true)
   })
 
   test('/redirect', async () => {
-    const { html, redirected } = await nuxt.renderRoute('/redirect')
-    expect(html.includes('<div id="__nuxt"></div>')).toBe(true)
+    const { html, redirected } = await vssr.renderRoute('/redirect')
+    expect(html.includes('<div id="__vssr"></div>')).toBe(true)
     expect(redirected.path === '/').toBe(true)
     expect(redirected.status === 302).toBe(true)
   })
 
   test('/redirect -> check redirected source', async () => {
     // there are no transition properties in jsdom, ignore the error log
-    const window = await nuxt.renderAndGetWindow(url('/redirect'))
+    const window = await vssr.renderAndGetWindow(url('/redirect'))
     const html = window.document.body.innerHTML
     expect(html.includes('<h1>Index page</h1>')).toBe(true)
   })
 
   test('/redirect -> external link', async () => {
     let _headers, _status
-    const { html } = await nuxt.renderRoute('/redirect-external', {
+    const { html } = await vssr.renderRoute('/redirect-external', {
       res: {
         writeHead(status, headers) {
           _status = status
@@ -158,14 +158,14 @@ describe('basic ssr', () => {
     expect(html.includes('<div data-server-rendered="true"></div>')).toBe(true)
   })
 
-  test('/special-state -> check window.__NUXT__.test = true', async () => {
-    const window = await nuxt.renderAndGetWindow(url('/special-state'))
-    expect(window.document.title).toBe('Nuxt.js')
-    expect(window.__NUXT__.test).toBe(true)
+  test('/special-state -> check window.__VSSR__.test = true', async () => {
+    const window = await vssr.renderAndGetWindow(url('/special-state'))
+    expect(window.document.title).toBe('Vssr.js')
+    expect(window.__VSSR__.test).toBe(true)
   })
 
   test('/error', async () => {
-    await expect(nuxt.renderRoute('/error', { req: {}, res: {} }))
+    await expect(vssr.renderRoute('/error', { req: {}, res: {} }))
       .rejects.toThrow('Error mouahahah')
   })
 
@@ -193,7 +193,7 @@ describe('basic ssr', () => {
   })
 
   test('/error2', async () => {
-    const { html, error } = await nuxt.renderRoute('/error2')
+    const { html, error } = await vssr.renderRoute('/error2')
     expect(html.includes('Custom error')).toBe(true)
     expect(error.message.includes('Custom error')).toBe(true)
     expect(error.statusCode === undefined).toBe(true)
@@ -215,21 +215,21 @@ describe('basic ssr', () => {
   })
 
   test('/redirect-name', async () => {
-    const { html, redirected } = await nuxt.renderRoute('/redirect-name')
-    expect(html.includes('<div id="__nuxt"></div>')).toBe(true)
+    const { html, redirected } = await vssr.renderRoute('/redirect-name')
+    expect(html.includes('<div id="__vssr"></div>')).toBe(true)
     expect(redirected.path === '/stateless').toBe(true)
     expect(redirected.status === 302).toBe(true)
   })
 
   test('/no-ssr', async () => {
-    const { html } = await nuxt.renderRoute('/no-ssr')
+    const { html } = await vssr.renderRoute('/no-ssr')
     expect(html.includes(
       '<div class="no-ssr-placeholder">&lt;p&gt;Loading...&lt;/p&gt;</div>'
     )).toBe(true)
   })
 
   test('/no-ssr (client-side)', async () => {
-    const window = await nuxt.renderAndGetWindow(url('/no-ssr'))
+    const window = await vssr.renderAndGetWindow(url('/no-ssr'))
     const html = window.document.body.innerHTML
     expect(html.includes('Displayed only on client-side</h1>')).toBe(true)
   })
@@ -243,18 +243,18 @@ describe('basic ssr', () => {
       .rejects.toMatchObject({ statusCode: 304 })
   })
 
-  test('/_nuxt/server-bundle.json should return 404', async () => {
-    await expect(rp(url('/_nuxt/server-bundle.json')))
+  test('/_vssr/server-bundle.json should return 404', async () => {
+    await expect(rp(url('/_vssr/server-bundle.json')))
       .rejects.toMatchObject({ statusCode: 404 })
   })
 
-  test('/_nuxt/ should return 404', async () => {
-    await expect(rp(url('/_nuxt/')))
+  test('/_vssr/ should return 404', async () => {
+    await expect(rp(url('/_vssr/')))
       .rejects.toMatchObject({ statusCode: 404 })
   })
 
   test('/meta', async () => {
-    const { html } = await nuxt.renderRoute('/meta')
+    const { html } = await vssr.renderRoute('/meta')
     expect(html.includes('"meta":[{"works":true}]')).toBe(true)
   })
 
@@ -264,33 +264,33 @@ describe('basic ssr', () => {
   })
 
   test('/fn-midd?please=true', async () => {
-    const { html } = await nuxt.renderRoute('/fn-midd?please=true')
+    const { html } = await vssr.renderRoute('/fn-midd?please=true')
     expect(html.includes('<h1>Date:')).toBe(true)
   })
 
   test('/router-guard', async () => {
-    const { html } = await nuxt.renderRoute('/router-guard')
-    expect(html.includes('<p>Nuxt.js</p>')).toBe(true)
+    const { html } = await vssr.renderRoute('/router-guard')
+    expect(html.includes('<p>Vssr.js</p>')).toBe(true)
     expect(html.includes('Router Guard')).toBe(false)
   })
 
   test('/jsx', async () => {
-    const { html } = await nuxt.renderRoute('/jsx')
+    const { html } = await vssr.renderRoute('/jsx')
     expect(html.includes('<h1>JSX Page</h1>')).toBe(true)
   })
 
   test('/jsx-link', async () => {
-    const { html } = await nuxt.renderRoute('/jsx-link')
+    const { html } = await vssr.renderRoute('/jsx-link')
     expect(html.includes('<h1>JSX Link Page</h1>')).toBe(true)
   })
 
   test('/js-link', async () => {
-    const { html } = await nuxt.renderRoute('/js-link')
+    const { html } = await vssr.renderRoute('/js-link')
     expect(html.includes('<h1>vue file is first-class</h1>')).toBe(true)
   })
 
-  // Close server and ask nuxt to stop listening to file changes
+  // Close server and ask vssr to stop listening to file changes
   afterAll(async () => {
-    await nuxt.close()
+    await vssr.close()
   })
 })

@@ -1,11 +1,11 @@
 import { resolve } from 'path'
 import consola from 'consola'
 
-import { Nuxt, Options, version } from '../utils'
+import { Vssr, Options, version } from '../utils'
 
 describe('basic config defaults', () => {
-  test('Nuxt.version is same as package', () => {
-    expect(Nuxt.version).toBe(version)
+  test('Vssr.version is same as package', () => {
+    expect(Vssr.version).toBe(version)
   })
 
   test('modulesDir uses /node_modules as default if not set', () => {

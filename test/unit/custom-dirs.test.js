@@ -1,36 +1,36 @@
-import { loadFixture, getPort, Nuxt, rp } from '../utils'
+import { loadFixture, getPort, Vssr, rp } from '../utils'
 
 let port
 const url = route => 'http://localhost:' + port + route
 
-let nuxt = null
+let vssr = null
 
 describe('custom-dirs', () => {
   beforeAll(async () => {
     const config = await loadFixture('custom-dirs')
-    nuxt = new Nuxt(config)
+    vssr = new Vssr(config)
     port = await getPort()
-    await nuxt.listen(port, 'localhost')
+    await vssr.listen(port, 'localhost')
   })
 
   test.skip('custom assets directory', async () => {
-    const { html } = await nuxt.renderRoute('/')
+    const { html } = await vssr.renderRoute('/')
     expect(html).toContain('.global-css-selector')
   })
 
   test('custom layouts directory', async () => {
-    const { html } = await nuxt.renderRoute('/')
+    const { html } = await vssr.renderRoute('/')
     expect(html.includes('<p>I have custom layouts directory</p>')).toBe(true)
   })
 
   test('custom middleware directory', async () => {
-    const window = await nuxt.renderAndGetWindow(url('/user-agent'))
+    const window = await vssr.renderAndGetWindow(url('/user-agent'))
     const html = window.document.body.innerHTML
     expect(html.includes('<pre>Mozilla')).toBe(true)
   })
 
   test('custom pages directory', async () => {
-    const { html } = await nuxt.renderRoute('/')
+    const { html } = await vssr.renderRoute('/')
     expect(html.includes('<h1>I have custom pages directory</h1>')).toBe(true)
   })
 
@@ -41,8 +41,8 @@ describe('custom-dirs', () => {
     expect(headers['cache-control']).toBe('public, max-age=0')
   })
 
-  // Close server and ask nuxt to stop listening to file changes
+  // Close server and ask vssr to stop listening to file changes
   afterAll(async () => {
-    await nuxt.close()
+    await vssr.close()
   })
 })

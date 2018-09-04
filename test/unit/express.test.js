@@ -1,26 +1,26 @@
 import express from 'express'
-import { loadFixture, getPort, Nuxt, rp } from '../utils'
+import { loadFixture, getPort, Vssr, rp } from '../utils'
 
 let port
 const url = route => 'http://localhost:' + port + route
 
-let nuxt
+let vssr
 let app
 let server
 
 describe('express', () => {
-  // Init nuxt.js and create express server
+  // Init vssr.js and create express server
   beforeAll(async () => {
     const config = await loadFixture('basic')
-    nuxt = new Nuxt(config)
+    vssr = new Vssr(config)
 
     port = await getPort()
 
     // Create express app
     app = express()
 
-    // Register nuxt
-    app.use(nuxt.render)
+    // Register vssr
+    app.use(vssr.render)
 
     // Start listening on localhost:4000
     server = app.listen(port)
@@ -33,7 +33,7 @@ describe('express', () => {
   })
 
   afterAll(async () => {
-    await nuxt.close()
+    await vssr.close()
     await new Promise((resolve, reject) => {
       server.close(err => err ? reject(err) : resolve())
     })

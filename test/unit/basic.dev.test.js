@@ -1,10 +1,10 @@
 import consola from 'consola'
-import { Builder, getPort, loadFixture, Nuxt, rp } from '../utils'
+import { Builder, getPort, loadFixture, Vssr, rp } from '../utils'
 
 let port
 const url = route => 'http://localhost:' + port + route
 
-let nuxt = null
+let vssr = null
 let builder = null
 let transpile = null
 let output = null
@@ -14,7 +14,7 @@ describe('basic dev', () => {
     const config = await loadFixture('basic', {
       dev: true,
       debug: true,
-      buildDir: '.nuxt-dev',
+      buildDir: '.vssr-dev',
       build: {
         filenames: {
           app: ({ isDev }) => {
@@ -35,11 +35,11 @@ describe('basic dev', () => {
         }
       }
     })
-    nuxt = new Nuxt(config)
-    builder = new Builder(nuxt)
+    vssr = new Vssr(config)
+    builder = new Builder(vssr)
     await builder.build()
     port = await getPort()
-    await nuxt.listen(port, 'localhost')
+    await vssr.listen(port, 'localhost')
   })
 
   test('Check build:done hook called', () => {
@@ -63,18 +63,18 @@ describe('basic dev', () => {
   })
 
   test('/stateless', async () => {
-    const window = await nuxt.renderAndGetWindow(url('/stateless'))
+    const window = await vssr.renderAndGetWindow(url('/stateless'))
     const html = window.document.body.innerHTML
     expect(html.includes('<h1>My component!</h1>')).toBe(true)
   })
 
   test('Check render:routeDone hook called', () => {
-    expect(nuxt.__hook_render_routeDone__).toBe('/stateless')
+    expect(vssr.__hook_render_routeDone__).toBe('/stateless')
   })
 
-  // test('/_nuxt/test.hot-update.json should returns empty html', async t => {
+  // test('/_vssr/test.hot-update.json should returns empty html', async t => {
   //   try {
-  //     await rp(url('/_nuxt/test.hot-update.json'))
+  //     await rp(url('/_vssr/test.hot-update.json'))
   //   } catch (err) {
   //     t.is(err.statusCode, 404)
   //     t.is(err.response.body, '')
@@ -97,20 +97,20 @@ describe('basic dev', () => {
   })
 
   test('/error should return error stack trace (Youch)', async () => {
-    await expect(nuxt.renderAndGetWindow(url('/error'))).rejects.toMatchObject({
+    await expect(vssr.renderAndGetWindow(url('/error'))).rejects.toMatchObject({
       statusCode: 500
     })
   })
 
   test('/error no source-map (Youch)', async () => {
-    const sourceMaps = nuxt.renderer.resources.serverBundle.maps
-    nuxt.renderer.resources.serverBundle.maps = {}
+    const sourceMaps = vssr.renderer.resources.serverBundle.maps
+    vssr.renderer.resources.serverBundle.maps = {}
 
-    await expect(nuxt.renderAndGetWindow(url('/error'))).rejects.toMatchObject({
+    await expect(vssr.renderAndGetWindow(url('/error'))).rejects.toMatchObject({
       statusCode: 500
     })
 
-    nuxt.renderer.resources.serverBundle.maps = sourceMaps
+    vssr.renderer.resources.serverBundle.maps = sourceMaps
   })
 
   test('/error should return json format error (Youch)', async () => {
@@ -130,8 +130,8 @@ describe('basic dev', () => {
     })
   })
 
-  // Close server and ask nuxt to stop listening to file changes
+  // Close server and ask vssr to stop listening to file changes
   afterAll(async () => {
-    await nuxt.close()
+    await vssr.close()
   })
 })

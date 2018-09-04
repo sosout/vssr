@@ -1,16 +1,16 @@
-import { loadFixture, getPort, Nuxt, rp } from '../utils'
+import { loadFixture, getPort, Vssr, rp } from '../utils'
 
 let port
 const url = route => 'http://localhost:' + port + route
 
-let nuxt = null
+let vssr = null
 
 describe('dist options', () => {
   beforeAll(async () => {
     const options = await loadFixture('basic')
-    nuxt = new Nuxt(Object.assign(options, { dev: false }))
+    vssr = new Vssr(Object.assign(options, { dev: false }))
     port = await getPort()
-    await nuxt.listen(port, '0.0.0.0')
+    await vssr.listen(port, '0.0.0.0')
   })
 
   test('Specify maxAge/index in render.dist options', async () => {
@@ -18,13 +18,13 @@ describe('dist options', () => {
       resolveWithFullResponse: true
     })
     try {
-      await rp(url('/_nuxt/'), {
+      await rp(url('/_vssr/'), {
         resolveWithFullResponse: true
       })
     } catch (err) {
       expect(err.toString().includes('StatusCodeError'))
     }
-    const distFile = body.match(/\/_nuxt\/.+?\.js/)[0]
+    const distFile = body.match(/\/_vssr\/.+?\.js/)[0]
     const { headers } = await rp(url(distFile), {
       resolveWithFullResponse: true
     })
@@ -32,8 +32,8 @@ describe('dist options', () => {
     expect(headers['cache-control'].includes(twoYears)).toBe(true)
   })
 
-  // Close server and ask nuxt to stop listening to file changes
+  // Close server and ask vssr to stop listening to file changes
   afterAll(async () => {
-    await nuxt.close()
+    await vssr.close()
   })
 })

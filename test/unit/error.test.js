@@ -1,41 +1,41 @@
 // import rp from 'request-promise-native'
 import consola from 'consola'
-import { loadFixture, getPort, Nuxt } from '../utils'
+import { loadFixture, getPort, Vssr } from '../utils'
 
 let port
 const url = route => 'http://localhost:' + port + route
 
-let nuxt = null
+let vssr = null
 // let logSpy
 
 describe('error', () => {
   beforeAll(async () => {
     const config = await loadFixture('error')
-    nuxt = new Nuxt(config)
+    vssr = new Vssr(config)
     port = await getPort()
-    await nuxt.listen(port, 'localhost')
+    await vssr.listen(port, 'localhost')
   })
 
   test('/ should display an error', async () => {
-    await expect(nuxt.renderRoute('/')).rejects.toMatchObject({
+    await expect(vssr.renderRoute('/')).rejects.toMatchObject({
       message: expect.stringContaining('not_defined is not defined')
     })
   })
 
   test('/404 should display an error too', async () => {
-    const { error } = await nuxt.renderRoute('/404')
+    const { error } = await vssr.renderRoute('/404')
     expect(error.message.includes('This page could not be found')).toBe(true)
   })
 
   test('/ with renderAndGetWindow()', async () => {
-    await expect(nuxt.renderAndGetWindow(url('/'))).rejects.toMatchObject({
+    await expect(vssr.renderAndGetWindow(url('/'))).rejects.toMatchObject({
       statusCode: 500
     })
   })
 
   test('Error: resolvePath()', () => {
-    expect(() => nuxt.resolvePath()).toThrowError()
-    expect(() => nuxt.resolvePath('@/pages/about.vue')).toThrowError('Cannot resolve "@/pages/about.vue"')
+    expect(() => vssr.resolvePath()).toThrowError()
+    expect(() => vssr.resolvePath('@/pages/about.vue')).toThrowError('Cannot resolve "@/pages/about.vue"')
   })
 
   test('Error: callHook()', async () => {
@@ -44,9 +44,9 @@ describe('error', () => {
     const errorHook = jest.fn()
     const error = new Error('test hook error')
 
-    nuxt.hook('error', errorHook)
-    nuxt.hook('test:error', () => { throw error })
-    await nuxt.callHook('test:error')
+    vssr.hook('error', errorHook)
+    vssr.hook('test:error', () => { throw error })
+    await vssr.callHook('test:error')
 
     expect(errorHook).toHaveBeenCalledTimes(1)
     expect(errorHook).toHaveBeenCalledWith(error)
@@ -54,8 +54,8 @@ describe('error', () => {
     expect(consola.error).toHaveBeenCalledWith(error)
   })
 
-  // Close server and ask nuxt to stop listening to file changes
+  // Close server and ask vssr to stop listening to file changes
   afterAll(async () => {
-    await nuxt.close()
+    await vssr.close()
   })
 })

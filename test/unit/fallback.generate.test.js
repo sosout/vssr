@@ -3,22 +3,22 @@ import { existsSync } from 'fs'
 import { resolve } from 'path'
 import serveStatic from 'serve-static'
 import finalhandler from 'finalhandler'
-import { loadFixture, getPort, Nuxt, Generator, Options, rp } from '../utils'
+import { loadFixture, getPort, Vssr, Generator, Options, rp } from '../utils'
 
 let port
 const url = route => 'http://localhost:' + port + route
-const distDir = resolve(__dirname, '..', 'fixtures/basic/.nuxt-generate-fallback')
+const distDir = resolve(__dirname, '..', 'fixtures/basic/.vssr-generate-fallback')
 
-let nuxt = null
+let vssr = null
 let server = null
 let generator = null
 
 describe('fallback generate', () => {
   beforeAll(async () => {
-    const config = await loadFixture('basic', { generate: { dir: '.nuxt-generate-fallback' } })
+    const config = await loadFixture('basic', { generate: { dir: '.vssr-generate-fallback' } })
 
-    nuxt = new Nuxt(config)
-    generator = new Generator(nuxt)
+    vssr = new Vssr(config)
+    generator = new Generator(vssr)
 
     await generator.generate({ build: false })
 
@@ -40,8 +40,8 @@ describe('fallback generate', () => {
     expect(existsSync(resolve(distDir, '404.html'))).toBe(false)
   })
 
-  test('nuxt re-generating with generate.fallback = false', async () => {
-    nuxt.options.generate.fallback = false
+  test('vssr re-generating with generate.fallback = false', async () => {
+    vssr.options.generate.fallback = false
     await expect(generator.generate({ build: false })).resolves.toBeTruthy()
   })
 
@@ -57,8 +57,8 @@ describe('fallback generate', () => {
     expect(existsSync(resolve(distDir, '404.html'))).toBe(false)
   })
 
-  test('nuxt re-generating with generate.fallback = \'\'', async () => {
-    nuxt.options.generate.fallback = ''
+  test('vssr re-generating with generate.fallback = \'\'', async () => {
+    vssr.options.generate.fallback = ''
     await expect(generator.generate({ build: false })).resolves.toBeTruthy()
   })
 
@@ -75,15 +75,15 @@ describe('fallback generate', () => {
   })
 
   test('generate.fallback = true is transformed to /404.html', () => {
-    nuxt.options.generate.fallback = true
-    const options = Options.from(nuxt.options)
+    vssr.options.generate.fallback = true
+    const options = Options.from(vssr.options)
     expect(options.generate.fallback).toBe('404.html')
   })
 
   test(
-    'nuxt re-generating with generate.fallback = "spa-fallback.html"',
+    'vssr re-generating with generate.fallback = "spa-fallback.html"',
     async () => {
-      nuxt.options.generate.fallback = 'spa-fallback.html'
+      vssr.options.generate.fallback = 'spa-fallback.html'
       await expect(generator.generate({ build: false })).resolves.toBeTruthy()
     }
   )
@@ -97,7 +97,7 @@ describe('fallback generate', () => {
     expect(existsSync(resolve(distDir, '404.html'))).toBe(false)
   })
 
-  // Close server and ask nuxt to stop listening to file changes
+  // Close server and ask vssr to stop listening to file changes
   afterAll(async () => {
     await server.close()
   })

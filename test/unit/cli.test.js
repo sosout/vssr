@@ -7,34 +7,34 @@ let port
 const rootDir = resolve(__dirname, '..', 'fixtures/cli')
 
 const url = route => 'http://localhost:' + port + route
-const nuxtBin = resolve(__dirname, '..', '..', 'bin', 'nuxt')
+const vssrBin = resolve(__dirname, '..', '..', 'bin', 'vssr')
 
-const close = async (nuxtInt) => {
-  nuxtInt.kill('SIGKILL')
+const close = async (vssrInt) => {
+  vssrInt.kill('SIGKILL')
   // Wait max 10s for the process to be killed
-  if (await waitUntil(() => nuxtInt.killed, 10)) {
+  if (await waitUntil(() => vssrInt.killed, 10)) {
     // eslint-disable-next-line no-console
-    console.warn(`Unable to close process with pid: ${nuxtInt.pid}`)
+    console.warn(`Unable to close process with pid: ${vssrInt.pid}`)
   }
 }
 
 describe.skip.appveyor('cli', () => {
-  test('nuxt dev', async () => {
+  test('vssr dev', async () => {
     let stdout = ''
     const env = process.env
     env.PORT = port = await getPort()
 
-    const nuxtDev = spawn('node', [nuxtBin, 'dev', rootDir], { env })
-    nuxtDev.stdout.on('data', (data) => { stdout += data })
+    const vssrDev = spawn('node', [vssrBin, 'dev', rootDir], { env })
+    vssrDev.stdout.on('data', (data) => { stdout += data })
 
     // Wait max 20s for the starting
     await waitUntil(() => stdout.includes(`${port}`))
 
-    // Change file specified in `watchers` (nuxt.config.js)
+    // Change file specified in `watchers` (vssr.config.js)
     const customFilePath = join(rootDir, 'custom.file')
     writeFileSync(customFilePath, 'This file is used to test custom chokidar watchers.')
 
-    // Change file specified in `serverMiddleware` (nuxt.config.js)
+    // Change file specified in `serverMiddleware` (vssr.config.js)
     const serverMiddlewarePath = join(rootDir, 'middleware.js')
     writeFileSync(serverMiddlewarePath, '// This file is used to test custom chokidar watchers.\n')
 
@@ -43,10 +43,10 @@ describe.skip.appveyor('cli', () => {
 
     // [Add actual test for changes here]
 
-    await close(nuxtDev)
+    await close(vssrDev)
   })
 
-  test('nuxt start', async () => {
+  test('vssr start', async () => {
     let stdout = ''
     let error
 
@@ -54,14 +54,14 @@ describe.skip.appveyor('cli', () => {
     env.PORT = port = await getPort()
 
     await new Promise((resolve) => {
-      const nuxtBuild = spawn('node', [nuxtBin, 'build', rootDir], { env })
-      nuxtBuild.on('close', () => { resolve() })
+      const vssrBuild = spawn('node', [vssrBin, 'build', rootDir], { env })
+      vssrBuild.on('close', () => { resolve() })
     })
 
-    const nuxtStart = spawn('node', [nuxtBin, 'start', rootDir], { env })
+    const vssrStart = spawn('node', [vssrBin, 'start', rootDir], { env })
 
-    nuxtStart.stdout.on('data', (data) => { stdout += data })
-    nuxtStart.on('error', (err) => { error = err })
+    vssrStart.stdout.on('data', (data) => { stdout += data })
+    vssrStart.on('error', (err) => { error = err })
 
     // Wait max 40s for the starting
     if (await waitUntil(() => stdout.includes(`${port}`), 40)) {
@@ -74,6 +74,6 @@ describe.skip.appveyor('cli', () => {
     const html = await rp(url('/'))
     expect(html).toMatch(('<div>CLI Test</div>'))
 
-    await close(nuxtStart)
+    await close(vssrStart)
   })
 })

@@ -4,24 +4,24 @@ import { resolve } from 'path'
 import { remove } from 'fs-extra'
 import serveStatic from 'serve-static'
 import finalhandler from 'finalhandler'
-import { Builder, Generator, getPort, loadFixture, Nuxt, rp } from '../utils'
+import { Builder, Generator, getPort, loadFixture, Vssr, rp } from '../utils'
 
 let port
 const url = route => 'http://localhost:' + port + route
 const rootDir = resolve(__dirname, '..', 'fixtures/basic')
-const distDir = resolve(rootDir, '.nuxt-generate')
+const distDir = resolve(rootDir, '.vssr-generate')
 
 let server = null
 let generator = null
 
 describe('basic generate', () => {
   beforeAll(async () => {
-    const config = await loadFixture('basic', { generate: { dir: '.nuxt-generate' } })
-    const nuxt = new Nuxt(config)
-    const builder = new Builder(nuxt)
+    const config = await loadFixture('basic', { generate: { dir: '.vssr-generate' } })
+    const vssr = new Vssr(config)
+    const builder = new Builder(vssr)
     builder.build = jest.fn()
 
-    generator = new Generator(nuxt, builder)
+    generator = new Generator(vssr, builder)
 
     await generator.generate()
 
@@ -40,7 +40,7 @@ describe('basic generate', () => {
   })
 
   test('Check ready hook called', () => {
-    expect(generator.nuxt.__hook_ready_called__).toBe(true)
+    expect(generator.vssr.__hook_ready_called__).toBe(true)
   })
 
   test('Format errors', () => {
@@ -56,13 +56,13 @@ describe('basic generate', () => {
   })
 
   test('/stateless', async () => {
-    const window = await generator.nuxt.renderAndGetWindow(url('/stateless'))
+    const window = await generator.vssr.renderAndGetWindow(url('/stateless'))
     const html = window.document.body.innerHTML
     expect(html.includes('<h1>My component!</h1>')).toBe(true)
   })
 
   test('/css', async () => {
-    const window = await generator.nuxt.renderAndGetWindow(url('/css'))
+    const window = await generator.vssr.renderAndGetWindow(url('/css'))
 
     const headHtml = window.document.head.innerHTML
     expect(headHtml.includes('.red{color:red')).toBe(true)
@@ -75,24 +75,24 @@ describe('basic generate', () => {
   })
 
   test('/stateful', async () => {
-    const window = await generator.nuxt.renderAndGetWindow(url('/stateful'))
+    const window = await generator.vssr.renderAndGetWindow(url('/stateful'))
     const html = window.document.body.innerHTML
     expect(html.includes('<div><p>The answer is 42</p></div>')).toBe(true)
   })
 
   test('/head', async () => {
-    const window = await generator.nuxt.renderAndGetWindow(url('/head'))
+    const window = await generator.vssr.renderAndGetWindow(url('/head'))
     const html = window.document.body.innerHTML
     const metas = window.document.getElementsByTagName('meta')
-    expect(window.document.title).toBe('My title - Nuxt.js')
+    expect(window.document.title).toBe('My title - Vssr.js')
     expect(metas[0].getAttribute('content')).toBe('my meta')
     expect(html.includes('<div><h1>I can haz meta tags</h1></div>')).toBe(true)
   })
 
   test('/async-data', async () => {
-    const window = await generator.nuxt.renderAndGetWindow(url('/async-data'))
+    const window = await generator.vssr.renderAndGetWindow(url('/async-data'))
     const html = window.document.body.innerHTML
-    expect(html.includes('<p>Nuxt.js</p>')).toBe(true)
+    expect(html.includes('<p>Vssr.js</p>')).toBe(true)
   })
 
   test('/users/1/index.html', async () => {
@@ -125,30 +125,30 @@ describe('basic generate', () => {
 
   test('/validate should not be server-rendered', async () => {
     const html = await rp(url('/validate'))
-    expect(html.includes('<div id="__nuxt"></div>')).toBe(true)
+    expect(html.includes('<div id="__vssr"></div>')).toBe(true)
     expect(html.includes('serverRendered:!1')).toBe(true)
   })
 
   test('/validate -> should display a 404', async () => {
-    const window = await generator.nuxt.renderAndGetWindow(url('/validate'))
+    const window = await generator.vssr.renderAndGetWindow(url('/validate'))
     const html = window.document.body.innerHTML
     expect(html.includes('This page could not be found')).toBe(true)
   })
 
   test('/validate?valid=true', async () => {
-    const window = await generator.nuxt.renderAndGetWindow(url('/validate?valid=true'))
+    const window = await generator.vssr.renderAndGetWindow(url('/validate?valid=true'))
     const html = window.document.body.innerHTML
     expect(html.includes('I am valid</h1>')).toBe(true)
   })
 
   test('/redirect should not be server-rendered', async () => {
     const html = await rp(url('/redirect'))
-    expect(html.includes('<div id="__nuxt"></div>')).toBe(true)
+    expect(html.includes('<div id="__vssr"></div>')).toBe(true)
     expect(html.includes('serverRendered:!1')).toBe(true)
   })
 
   test('/redirect -> check redirected source', async () => {
-    const window = await generator.nuxt.renderAndGetWindow(url('/redirect'))
+    const window = await generator.vssr.renderAndGetWindow(url('/redirect'))
     const html = window.document.body.innerHTML
     expect(html.includes('<h1>Index page</h1>')).toBe(true)
   })
@@ -163,8 +163,8 @@ describe('basic generate', () => {
     })
   })
 
-  test('nuxt re-generating with no subfolders', async () => {
-    generator.nuxt.options.generate.subFolders = false
+  test('vssr re-generating with no subfolders', async () => {
+    generator.vssr.options.generate.subFolders = false
     await expect(generator.generate({ build: false })).resolves.toBeTruthy()
   })
 
