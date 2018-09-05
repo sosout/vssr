@@ -3,12 +3,13 @@ const { join } = require('path')
 
 const consola = require('consola')
 
-// Global error handler
+// 全局错误处理
 process.on('unhandledRejection', err => consola.error(err))
 
-// Exit process on fatal errors
+// 注册自定义报告者实例
 consola.add({
   log(logObj) {
+    // 致命错误退出进程
     if (logObj.type === 'fatal') {
       process.stderr.write('Vssr Fatal Error :(\n')
       process.exit(1)

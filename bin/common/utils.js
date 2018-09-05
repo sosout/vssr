@@ -17,11 +17,12 @@ const getVssrConfigFile = argv => resolve(getRootDir(argv), argv['config-file'])
 exports.vssrConfigFile = getVssrConfigFile
 
 exports.loadVssrConfig = (argv) => {
+  // D:\_jobs\fullbook\vssr
   const rootDir = getRootDir(argv)
+  // D:\_jobs\fullbook\vssr\vssr.config.js
   const vssrConfigFile = getVssrConfigFile(argv)
 
   let options = {}
-
   if (existsSync(vssrConfigFile)) {
     delete require.cache[vssrConfigFile]
     options = esm(vssrConfigFile)

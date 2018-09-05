@@ -1,25 +1,16 @@
 {
   "name": "vssr-start",
-  "version": "2.0.0",
+  "version": "0.0.2",
   "description": "Starts Vssr.js Application in production mode",
   "license": "MIT",
-  "homepage": "https://github.com/vssr/vssr.js#readme",
+  "homepage": "https://github.com/sosout/vssr#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vssr/vssr.js"
+    "url": "git+https://github.com/sosout/vssr.git"
   },
   "contributors": [
     {
-      "name": "Sebastien Chopin (@Atinux)"
-    },
-    {
-      "name": "Alexandre Chopin (@alexchopin)"
-    },
-    {
-      "name": "Pooya Parsa (@pi0)"
-    },
-    {
-      "name": "Clark Du (@clarkdo)"
+      "name": "Weich (@sosout)"
     }
   ],
   "keywords": [

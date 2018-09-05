@@ -27,7 +27,7 @@ if (argv.version) {
   process.exit(0)
 }
 
-if (argv.hostname === '') {
+if (argv.hostname === '' || argv.hostname === "''") {
   consola.fatal('Provided hostname argument has no value')
 }
 
@@ -50,7 +50,7 @@ if (argv.help) {
 }
 
 const config = () => {
-  // Force development mode for add hot reloading and watching changes
+  // 强制开发模式，用于添加热重新加载和观察更改
   return Object.assign(loadVssrConfig(argv), { dev: true })
 }
 

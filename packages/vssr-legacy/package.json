@@ -1,25 +1,16 @@
 {
   "name": "vssr-legacy",
-  "version": "2.0.0",
+  "version": "0.0.2",
   "description": "Legacy build of Vssr.js for Node.js < 8.0.0",
   "license": "MIT",
-  "homepage": "https://github.com/vssr/vssr.js#readme",
+  "homepage": "https://github.com/sosout/vssr#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vssr/vssr.js"
+    "url": "git+https://github.com/sosout/vssr.git"
   },
   "contributors": [
     {
-      "name": "Sebastien Chopin (@Atinux)"
-    },
-    {
-      "name": "Alexandre Chopin (@alexchopin)"
-    },
-    {
-      "name": "Pooya Parsa (@pi0)"
-    },
-    {
-      "name": "Clark Du (@clarkdo)"
+      "name": "Weich (@sosout)"
     }
   ],
   "keywords": [
@@ -52,6 +43,7 @@
     "@babel/core": "^7.0.0",
     "@nuxtjs/babel-preset-app": "^0.5.0",
     "@nuxtjs/friendly-errors-webpack-plugin": "^2.0.2",
+    "@nuxtjs/opencollective": "^0.1.0",
     "@nuxtjs/youch": "^4.2.3",
     "babel-loader": "^8.0.0",
     "cache-loader": "^1.2.2",
@@ -80,7 +72,6 @@
     "memory-fs": "^0.4.1",
     "mini-css-extract-plugin": "^0.4.2",
     "minimist": "^1.2.0",
-    "opencollective": "^1.0.3",
     "pify": "^4.0.0",
     "postcss": "^6.0.22",
     "postcss-import": "^11.1.0",
