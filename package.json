@@ -1,6 +1,6 @@
 {
   "name": "vssr",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "A minimalistic framework for server-rendered Vue.js applications (inspired by Nuxt.js)",
   "contributors": [
     {
@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
     "@nuxtjs/babel-preset-app": "^0.5.0",
     "@nuxtjs/friendly-errors-webpack-plugin": "^2.0.2",
     "@nuxtjs/opencollective": "^0.1.0",

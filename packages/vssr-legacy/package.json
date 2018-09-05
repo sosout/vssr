@@ -1,6 +1,6 @@
 {
   "name": "vssr-legacy",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Legacy build of Vssr.js for Node.js < 8.0.0",
   "license": "MIT",
   "homepage": "https://github.com/sosout/vssr#readme",
@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
     "@nuxtjs/babel-preset-app": "^0.5.0",
     "@nuxtjs/friendly-errors-webpack-plugin": "^2.0.2",
     "@nuxtjs/opencollective": "^0.1.0",

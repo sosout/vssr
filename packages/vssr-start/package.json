@@ -1,6 +1,6 @@
 {
   "name": "vssr-start",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Starts Vssr.js Application in production mode",
   "license": "MIT",
   "homepage": "https://github.com/sosout/vssr#readme",
