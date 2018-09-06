@@ -49,6 +49,7 @@ if (argv.help) {
   process.exit(0)
 }
 
+// 合并命令行配置，获取最新配置
 const config = () => {
   // 强制开发模式，用于添加热重新加载和观察更改
   return Object.assign(loadVssrConfig(argv), { dev: true })

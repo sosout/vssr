@@ -16,6 +16,7 @@ const getVssrConfigFile = argv => resolve(getRootDir(argv), argv['config-file'])
 
 exports.vssrConfigFile = getVssrConfigFile
 
+// 合并命令行配置，获取最新配置：vssr dev <dir> -p <port number> -H <hostname>
 exports.loadVssrConfig = (argv) => {
   // D:\_jobs\fullbook\vssr
   const rootDir = getRootDir(argv)
@@ -35,8 +36,8 @@ exports.loadVssrConfig = (argv) => {
   } else if (argv['config-file'] !== 'vssr.config.js') {
     consola.fatal('Could not load config file: ' + argv['config-file'])
   }
-
-  if (typeof options.rootDir !== 'string') {
+  // 命令行指定的路径参数覆盖 rootDir 属性配置
+  if (rootDir/*typeof options.rootDir !== 'string'*/) {
     options.rootDir = rootDir
   }
 
